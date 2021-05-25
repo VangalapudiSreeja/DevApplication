@@ -1,4 +1,4 @@
-package com.app.dca.DevApplication;
+package com.app.dca;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

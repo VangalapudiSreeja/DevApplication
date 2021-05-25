@@ -4,30 +4,70 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
+@ApiModel(value = "Response Bean")
 public class Response {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int respId;
+	
+	
+	@ApiModelProperty(name = "ResponseAnswer",value = "Hold the min 5 char response answer",required = true)
+	@NotEmpty(message = "Answer cannot be left blank or null")
+	@Size(min = 5, max = 40,message = "Invalid Answer")
 	private String answer;
+	
+	
+	@NotBlank(message = "Response date is required")
+	@CheckDate("YYYY-MM-DD")
 	private LocalDate respDate;
+	
+	
 	private LocalTime respTime;
+	
+	
+	@Min(value = 50,message = "Accuracy cannot be decreased")
+	@ApiModelProperty(name = "Response accuracy",value = "Holds accuracy rate min of 50 is allowed")
 	private int accuracy;	// Likes on Response increase accuracy
+	
+	
 	private Developer dev;
+
+	
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Feed feed;
+	
 	
 	public Response() {
 		
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 
-	public Response(int respId, String answer, LocalDate respDate, LocalTime respTime, int accuracy, Developer dev,
-			Feed feed) {
+	public Response(int respId,
+			@NotEmpty(message = "Answer cannot be left blank or null")@Size(min = 5, max = 40,message = "Invalid Answer") String answer, LocalDate respDate,
+			@Min(value = 50,message = "Accuracy cannot be decreased") int accuracy,  LocalTime respTime, Developer dev, Feed feed) {
 		super();
 		this.respId = respId;
 		this.answer = answer;

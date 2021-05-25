@@ -14,6 +14,7 @@ import com.app.dca.exception.UnknownFeedException;
 import com.app.dca.exception.UnknownResponseException;
 import com.app.dca.repository.IResponseRepository;
 
+@Service
 public class ResponseServiceImpl implements IResponseService {
 	
 	@Autowired
@@ -33,9 +34,12 @@ public class ResponseServiceImpl implements IResponseService {
 	public Response editResponse(Response resp, Integer id) {
 		// TODO Auto-generated method stub
 		Optional<Response> up = repo.findById(id);
+		Response response = null;
+
 		if(up.isPresent())
 		{
-			Response response = up.get();
+			 response = up.get();
+
 			response.setRespId(resp.getRespId());
 			response.setAnswer(resp.getAnswer());
 			response.setRespDate(resp.getRespDate());
@@ -46,7 +50,7 @@ public class ResponseServiceImpl implements IResponseService {
 			return repo.save(response);
 		}
 		
-		return null;
+		return response;
 	}
 
 	@Override
@@ -64,14 +68,14 @@ public class ResponseServiceImpl implements IResponseService {
 
 	@Override
 	public List<Response> getResponseByFeed(int feedId) throws UnknownFeedException {
-		// TODO Auto-generated method stub
-		return null;
+
+		return repo.fetchResponseByFeed(feedId);
 	}
 
 	@Override
 	public List<Response> getResponseByDeveloper(int devId) throws UnknownDeveloperException {
-		// TODO Auto-generated method stub
-		return null;
+
+		return repo.fetchResponseByDeveloper(devId);
 	}
 
 
@@ -84,8 +88,9 @@ public class ResponseServiceImpl implements IResponseService {
 
 	@Override
 	public List<Response> getAllResponses() {
-		// TODO Auto-generated method stub
-		return null;
+
+		System.out.println("Inside get all responses");
+		return repo.findAll();
 	}
 
 } //end class
